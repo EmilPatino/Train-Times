@@ -13,7 +13,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 function currentTime() {
-  var time = moment().format('LT');
+  var time = moment().format('HH:mm');
   $("#displayTime").html(time);
   setTimeout(currentTime, 1000);
 };
@@ -52,6 +52,7 @@ database.ref().on("child_added", function(childSnapshot) {
   console.log(trTime);
   console.log(trFreq);
 
+
   var trTimeConverted = moment(trTime, "HH:mm").subtract(1, "years");
   var currentTime = moment();
   console.log(moment(currentTime).format("HH:mm"));
@@ -60,15 +61,21 @@ database.ref().on("child_added", function(childSnapshot) {
   var minutesForTrain = trFreq - remainderTime;
   var nextArrival = moment().add(minutesForTrain, "minutes").format("HH:mm");
   
+
   var newRow = $("<tr>").append(
     $("<td>").text(trName),
     $("<td>").text(trDest),
     $("<td>").text(trFreq),
     $("<td>").text(nextArrival),
     $("<td>").text(minutesForTrain)
-  );
+    );
 
   $("#train-table > tbody").append(newRow);
+
 });
 
-currentTime;
+setInterval(function() {
+    window.location.reload();
+  }, 60000);
+
+currentTime();
